@@ -7,23 +7,28 @@ import { validar } from '../validar';
 
 export class CorreoElectronico implements ICorreoBandeja {
 
-  // encapsulamiento
+  // encapsulamiento: los atributos son privados
   private _id: string = '';
-  private _remitente: DireccionEmail;
+  private _remitente: DireccionEmail = new DireccionEmail('sin-remitente@correo.com');
   private _destinatarios: DireccionEmail[] = [];
   private _asunto: string = '';
   private _cuerpo: string = '';
   private _fecha: Date = new Date();
   private _bandejaOrigen: TipoBandeja | null = null;
 
+  // doble encapsulamiento: ni siquiera la propia clase toca los atributos directo,
+  // todo pasa por los set (que validan) y los get
   constructor(id: string, datos: DatosNuevoCorreo) {
     this.setId(id);
-    this._remitente = new DireccionEmail(datos.remitente);
-    this.setDestinatarios(datos.destinatarios ?? []);
-    this.setAsunto(datos.asunto ?? '');
-    this.setCuerpo(datos.cuerpo ?? '');
-    this.setFecha(datos.fecha ?? new Date());
+    this.setRemitente(datos.remitente);
+    // si un dato opcional no viene, se usa un valor por defecto
+    this.setDestinatarios(datos.destinatarios === undefined ? [] : datos.destinatarios);
+    this.setAsunto(datos.asunto === undefined ? '' : datos.asunto);
+    this.setCuerpo(datos.cuerpo === undefined ? '' : datos.cuerpo);
+    this.setFecha(datos.fecha === undefined ? new Date() : datos.fecha);
   }
+
+  // ---------- get públicos ----------
 
   public getId(): string {
     return this._id;
@@ -33,7 +38,7 @@ export class CorreoElectronico implements ICorreoBandeja {
     return this._remitente.getValor();
   }
 
-  // doble encapsulamiento: devuelve copias, no las referencias internas
+  // devuelve una copia, no la lista interna
   public getDestinatarios(): string[] {
     return this._destinatarios.map((d) => d.getValor());
   }
@@ -46,57 +51,67 @@ export class CorreoElectronico implements ICorreoBandeja {
     return this._cuerpo;
   }
 
+  // devuelve una copia, no la fecha interna
   public getFecha(): Date {
     return new Date(this._fecha.getTime());
-  }
-
-  public estaCompleto(): boolean {
-    return this._destinatarios.length > 0 && this._asunto !== '';
-  }
-
-  public estaEliminado(): boolean {
-    return this._bandejaOrigen !== null;
   }
 
   public getBandejaOrigen(): TipoBandeja | null {
     return this._bandejaOrigen;
   }
 
+  // ---------- comportamiento ----------
+
+  public estaCompleto(): boolean {
+    return this.getDestinatarios().length > 0 && this.getAsunto() !== '';
+  }
+
+  public estaEliminado(): boolean {
+    return this.getBandejaOrigen() !== null;
+  }
+
   // eliminación lógica: el correo no se borra, se recuerda de dónde vino
   public marcarEliminado(origen: TipoBandeja): void {
-    validar(!this.estaEliminado(), `El correo ${this._id} ya está eliminado`);
+    validar(!this.estaEliminado(), `El correo ${this.getId()} ya está eliminado`);
     validar(origen !== TipoBandeja.ELIMINADOS, 'El origen de un correo eliminado no puede ser Eliminados');
-    this._bandejaOrigen = origen;
+    this.setBandejaOrigen(origen);
   }
 
   public restaurar(destino: TipoBandeja): void {
-    validar(this.estaEliminado(), `El correo ${this._id} no está eliminado`);
-    validar(destino === this._bandejaOrigen, `El correo ${this._id} solo puede volver a ${this._bandejaOrigen}`);
-    this._bandejaOrigen = null;
+    validar(this.estaEliminado(), `El correo ${this.getId()} no está eliminado`);
+    validar(destino === this.getBandejaOrigen(), `El correo ${this.getId()} solo puede volver a ${this.getBandejaOrigen()}`);
+    this.setBandejaOrigen(null);
   }
 
   public obtenerDatos(): DatosCorreo {
     return {
-      id: this._id,
+      id: this.getId(),
       remitente: this.getRemitente(),
       destinatarios: this.getDestinatarios(),
-      asunto: this._asunto,
-      cuerpo: this._cuerpo,
+      asunto: this.getAsunto(),
+      cuerpo: this.getCuerpo(),
       fecha: this.getFecha(),
       eliminado: this.estaEliminado(),
-      bandejaOrigen: this._bandejaOrigen,
+      bandejaOrigen: this.getBandejaOrigen(),
     };
   }
+
+  // ---------- set privados (validan antes de guardar) ----------
 
   private setId(valor: string): void {
     validar(valor.trim() !== '', 'El id del correo no puede estar vacío');
     this._id = valor.trim();
   }
 
+  private setRemitente(valor: string): void {
+    this._remitente = new DireccionEmail(valor);
+  }
+
   private setDestinatarios(valores: string[]): void {
     const direcciones = valores.map((v) => new DireccionEmail(v));
-    const unicas = new Set(direcciones.map((d) => d.getValor()));
-    validar(unicas.size === direcciones.length, 'Hay destinatarios repetidos');
+    const emails = direcciones.map((d) => d.getValor());
+    const repetidos = emails.filter((email) => emails.filter((otro) => otro === email).length > 1);
+    validar(repetidos.length === 0, 'Hay destinatarios repetidos');
     this._destinatarios = direcciones;
   }
 
@@ -112,4 +127,13 @@ export class CorreoElectronico implements ICorreoBandeja {
     validar(!Number.isNaN(valor.getTime()), 'La fecha del correo no es válida');
     this._fecha = new Date(valor.getTime());
   }
+
+  private setBandejaOrigen(valor: TipoBandeja | null): void {
+    this._bandejaOrigen = valor;
+  }
 }
+
+
+
+
+
