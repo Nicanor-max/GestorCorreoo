@@ -16,7 +16,8 @@ export class AgendaContactos implements IAgendaConsulta, IAgendaModificacion {
   }
 
   public buscarPorEmail(email: string): IContactoConsulta | null {
-    return this.buscar(email) ?? null;
+    const contacto = this.buscar(email);
+    return contacto === undefined ? null : contacto;
   }
 
   // doble encapsulamiento: se devuelve una copia, nadie toca la lista interna
@@ -48,7 +49,7 @@ export class AgendaContactos implements IAgendaConsulta, IAgendaModificacion {
 
   private buscar(email: string): Contacto | undefined {
     const normalizado = DireccionEmail.normalizar(email);
-    return this._contactos.find((c) => c.getEmail() === normalizado);
+    return this._contactos.filter((c) => c.getEmail() === normalizado)[0];
   }
 
   private obtener(email: string): Contacto {
