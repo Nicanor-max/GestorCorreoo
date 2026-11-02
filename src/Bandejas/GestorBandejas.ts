@@ -1,4 +1,9 @@
-
+import { TipoBandeja } from '../tipobandeja';
+import { IBandeja } from '../Interfaces/IBandeja';
+import { IBandejaConsulta } from '../Interfaces/IBandejaConsulta';
+import { ICorreoBandeja } from '../Interfaces/ICorreoBandeja';
+import { IGestorBandejas } from '../Interfaces/IGestorBandeja';
+import { validar } from '../validar';
 
 const TIPOS_OBLIGATORIOS: TipoBandeja[] = [
   TipoBandeja.ENTRADA,
@@ -49,5 +54,18 @@ export class GestorBandejas implements IGestorBandejas {
     return encontradas.length === 0 ? null : encontradas[0];
   }
 
- 
+  private obtenerUbicacion(idCorreo: string): TipoBandeja {
+    const tipo = this.ubicacionDe(idCorreo);
+    validar(tipo !== null, `El correo ${idCorreo} no está en ninguna bandeja`);
+    return tipo as TipoBandeja;
+  }
+
+  private getBandeja(tipo: TipoBandeja): IBandeja {
+    return this._bandejas.get(tipo) as IBandeja;
+  }
+
+  private registrarBandeja(bandeja: IBandeja): void {
+    validar(!this._bandejas.has(bandeja.getTipo()), `La bandeja ${bandeja.getTipo()} está repetida`);
+    this._bandejas.set(bandeja.getTipo(), bandeja);
+  }
 }
