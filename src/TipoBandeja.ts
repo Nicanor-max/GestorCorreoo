@@ -1,0 +1,6 @@
+export enum TipoBandeja {
+  ENTRADA = 'ENTRADA',
+  ENVIADOS = 'ENVIADOS',
+  BORRADORES = 'BORRADORES',
+  ELIMINADOS = 'ELIMINADOS',
+}
