@@ -54,5 +54,62 @@ export class CorreoElectronico implements ICorreoBandeja {
     return this._destinatarios.length > 0 && this._asunto !== '';
   }
 
+  public estaEliminado(): boolean {
+    return this._bandejaOrigen !== null;
+  }
 
+  public getBandejaOrigen(): TipoBandeja | null {
+    return this._bandejaOrigen;
+  }
+
+  // eliminación lógica: el correo no se borra, se recuerda de dónde vino
+  public marcarEliminado(origen: TipoBandeja): void {
+    validar(!this.estaEliminado(), `El correo ${this._id} ya está eliminado`);
+    validar(origen !== TipoBandeja.ELIMINADOS, 'El origen de un correo eliminado no puede ser Eliminados');
+    this._bandejaOrigen = origen;
+  }
+
+  public restaurar(destino: TipoBandeja): void {
+    validar(this.estaEliminado(), `El correo ${this._id} no está eliminado`);
+    validar(destino === this._bandejaOrigen, `El correo ${this._id} solo puede volver a ${this._bandejaOrigen}`);
+    this._bandejaOrigen = null;
+  }
+
+  public obtenerDatos(): DatosCorreo {
+    return {
+      id: this._id,
+      remitente: this.getRemitente(),
+      destinatarios: this.getDestinatarios(),
+      asunto: this._asunto,
+      cuerpo: this._cuerpo,
+      fecha: this.getFecha(),
+      eliminado: this.estaEliminado(),
+      bandejaOrigen: this._bandejaOrigen,
+    };
+  }
+
+  private setId(valor: string): void {
+    validar(valor.trim() !== '', 'El id del correo no puede estar vacío');
+    this._id = valor.trim();
+  }
+
+  private setDestinatarios(valores: string[]): void {
+    const direcciones = valores.map((v) => new DireccionEmail(v));
+    const unicas = new Set(direcciones.map((d) => d.getValor()));
+    validar(unicas.size === direcciones.length, 'Hay destinatarios repetidos');
+    this._destinatarios = direcciones;
+  }
+
+  private setAsunto(valor: string): void {
+    this._asunto = valor.trim();
+  }
+
+  private setCuerpo(valor: string): void {
+    this._cuerpo = valor;
+  }
+
+  private setFecha(valor: Date): void {
+    validar(!Number.isNaN(valor.getTime()), 'La fecha del correo no es válida');
+    this._fecha = new Date(valor.getTime());
+  }
 }
