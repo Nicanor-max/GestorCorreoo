@@ -4,7 +4,13 @@ export class AgendaContactos {
   private readonly contactos: Map<string, Contacto> = new Map();
 
   agregar(contacto: Contacto): void {
-    this.contactos.set(AgendaContactos.clave(contacto.email), contacto);
+    const clave = AgendaContactos.clave(contacto.email);
+
+    if (this.contactos.has(clave)) {
+      throw new Error(`Ya existe un contacto con la dirección '${contacto.email}'`);
+    }
+
+    this.contactos.set(clave, contacto);
   }
 
   consultar(email: string): Contacto | undefined {
@@ -13,13 +19,18 @@ export class AgendaContactos {
 
   modificar(emailActual: string, contactoNuevo: Contacto): void {
     const claveActual = AgendaContactos.clave(emailActual);
+    const claveNueva = AgendaContactos.clave(contactoNuevo.email);
 
     if (!this.contactos.has(claveActual)) {
       throw new Error(`No existe un contacto con la dirección '${emailActual}'`);
     }
 
+    if (claveNueva !== claveActual && this.contactos.has(claveNueva)) {
+      throw new Error(`Ya existe un contacto con la dirección '${contactoNuevo.email}'`);
+    }
+
     this.contactos.delete(claveActual);
-    this.contactos.set(AgendaContactos.clave(contactoNuevo.email), contactoNuevo);
+    this.contactos.set(claveNueva, contactoNuevo);
   }
 
   eliminar(email: string): void {
