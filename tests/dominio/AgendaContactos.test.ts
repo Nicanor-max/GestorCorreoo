@@ -83,4 +83,29 @@ describe("AgendaContactos", () => {
 
     expect(agenda.listar()).toHaveLength(1);
   });
+  it("rechaza agregar un contacto con una dirección que ya existe", () => {
+    agenda.agregar(esteban);
+    const otroConMismoEmail = new Contacto("Otro Esteban", "esteban@ucp.edu.ar");
+
+    expect(() => agenda.agregar(otroConMismoEmail)).toThrow();
+    expect(agenda.listar()).toEqual([esteban]);
+  });
+
+  it("considera iguales las direcciones que solo difieren en mayúsculas", () => {
+    agenda.agregar(esteban);
+    const enMayusculas = new Contacto("Esteban Paniagua", "ESTEBAN@UCP.EDU.AR");
+
+    expect(() => agenda.agregar(enMayusculas)).toThrow();
+  });
+
+  it("rechaza modificar un contacto hacia una dirección que usa otro", () => {
+    agenda.agregar(esteban);
+    agenda.agregar(nicanor);
+    const conEmailDeNicanor = new Contacto("Esteban Paniagua", "nicanor@ucp.edu.ar");
+
+    expect(() => agenda.modificar("esteban@ucp.edu.ar", conEmailDeNicanor)).toThrow();
+    expect(agenda.consultar("esteban@ucp.edu.ar")).toBe(esteban);
+    expect(agenda.consultar("nicanor@ucp.edu.ar")).toBe(nicanor);
+  });
+
 });
