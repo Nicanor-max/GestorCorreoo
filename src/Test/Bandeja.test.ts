@@ -59,5 +59,11 @@ describe('Bandejas', () => {
     expect(entrada.buscarPorId('C1')).toBeNull();
     expect(() => entrada.quitar('C1')).toThrow();
   });
+
+    it('buscarPorId devuelve null si no está', () => {
+    const entrada = new BandejaEntrada();
+    expect(entrada.buscarPorId('C1')).toBeNull();
+  });
+
 });
 

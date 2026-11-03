@@ -44,7 +44,7 @@ describe('AgendaContactos', () => {
     expect(agenda.cantidad()).toBe(1);
   });
 
-  it('listar devuelve una copia (encapsulamiento)', () => {
+  it('listar devuelve una copia ', () => {
     agenda.listar().pop();
     expect(agenda.cantidad()).toBe(2);
   });
