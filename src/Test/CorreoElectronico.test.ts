@@ -74,4 +74,16 @@ describe('CorreoElectronico', () => {
     correo.quitarFavorito();
     expect(correo.esFavorito()).toBe(false);
   });
+
+    it('se edita validando con los mismos set (RF07)', () => {
+    const correo = new CorreoElectronico('C1', { remitente: 'a@b.com' });
+    correo.cambiarDestinatarios(['x@y.com']);
+    correo.cambiarAsunto(' Nuevo asunto ');
+    correo.cambiarCuerpo('Texto');
+    expect(correo.getDestinatarios()).toEqual(['x@y.com']);
+    expect(correo.getAsunto()).toBe('Nuevo asunto');
+    expect(correo.getCuerpo()).toBe('Texto');
+    expect(() => correo.cambiarDestinatarios(['malo'])).toThrow();
+  });
+  
 });
