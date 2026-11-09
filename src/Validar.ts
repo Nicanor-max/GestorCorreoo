@@ -1,4 +1,4 @@
-export function validar(condicion: boolean, mensaje: string): void {
+export function Validar(condicion: boolean, mensaje: string): void {
   condicion || lanzarError(mensaje);
 }
 

@@ -42,6 +42,7 @@ export class Contacto implements IContactoConsulta, IContactoModificacion {
   }
 
   private setEmail(valor: string): void {
-    this._email = new DireccionEmail(valor);
+    Validar(valor.trim() !== '', 'El email del contacto no puede estar vacío');
+    this._email = new DireccionEmail(valor.trim());
   }
 }

@@ -2,7 +2,7 @@ import { TipoBandeja } from '../TipoBandeja';
 import { IBandeja } from '../Interfaces/IBandeja';
 import { ICorreoBandeja } from '../Interfaces/ICorreoBandeja';
 import { ICorreoConsulta } from '../Interfaces/ICorreoConsulta';
-import { validar } from '../validar';
+import { Validar } from '../Validar';
 
 // clase abstracta: todas las bandejas heredan de acá
 export abstract class BandejaBase implements IBandeja {
@@ -35,17 +35,17 @@ export abstract class BandejaBase implements IBandeja {
 
   // método plantilla: los pasos son fijos, cada bandeja redefine las reglas
   public recibir(correo: ICorreoBandeja, origen: TipoBandeja | null): void {
-    validar(!this.contiene(correo.getId()), `El correo ${correo.getId()} ya está en ${this.getTipo()}`);
+    Validar(!this.contiene(correo.getId()), `El correo ${correo.getId()} ya está en ${this.getTipo()}`);
     const desde = origen === null ? 'NUEVO' : origen;
-    validar(this.puedeRecibirDesde(origen), `No se puede mover un correo de ${desde} a ${this.getTipo()}`);
-    validar(this.admite(correo), `La bandeja ${this.getTipo()} no admite el correo ${correo.getId()}`);
+    Validar(this.puedeRecibirDesde(origen), `No se puede mover un correo de ${desde} a ${this.getTipo()}`);
+    Validar(this.admite(correo), `La bandeja ${this.getTipo()} no admite el correo ${correo.getId()}`);
     this.alRecibir(correo, origen);
     this._correos.push(correo);
   }
 
   public obtener(id: string): ICorreoBandeja {
     const correo = this.buscar(id);
-    validar(correo !== undefined, `El correo ${id} no está en ${this.getTipo()}`);
+    Validar(correo !== undefined, `El correo ${id} no está en ${this.getTipo()}`);
     return correo as ICorreoBandeja;
   }
 

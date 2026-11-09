@@ -82,14 +82,14 @@ export class CorreoElectronico implements ICorreoBandeja {
 
   // eliminación lógica: el correo no se borra, se recuerda de dónde vino
   public marcarEliminado(origen: TipoBandeja): void {
-    validar(!this.estaEliminado(), `El correo ${this.getId()} ya está eliminado`);
-    validar(origen !== TipoBandeja.ELIMINADOS, 'El origen de un correo eliminado no puede ser Eliminados');
+    Validar(!this.estaEliminado(), `El correo ${this.getId()} ya está eliminado`);
+    Validar(origen !== TipoBandeja.ELIMINADOS, 'El origen de un correo eliminado no puede ser Eliminados');
     this.setBandejaOrigen(origen);
   }
 
   public restaurar(destino: TipoBandeja): void {
-    validar(this.estaEliminado(), `El correo ${this.getId()} no está eliminado`);
-    validar(destino === this.getBandejaOrigen(), `El correo ${this.getId()} solo puede volver a ${this.getBandejaOrigen()}`);
+    Validar(this.estaEliminado(), `El correo ${this.getId()} no está eliminado`);
+    Validar(destino === this.getBandejaOrigen(), `El correo ${this.getId()} solo puede volver a ${this.getBandejaOrigen()}`);
     this.setBandejaOrigen(null);
   }
 
@@ -129,7 +129,7 @@ export class CorreoElectronico implements ICorreoBandeja {
   // ---------- set privados (validan antes de guardar) ----------
 
   private setId(valor: string): void {
-    validar(valor.trim() !== '', 'El id del correo no puede estar vacío');
+    Validar(valor.trim() !== '', 'El id del correo no puede estar vacío');
     this._id = valor.trim();
   }
 
@@ -141,7 +141,7 @@ export class CorreoElectronico implements ICorreoBandeja {
     const direcciones = valores.map((v) => new DireccionEmail(v));
     const emails = direcciones.map((d) => d.getValor());
     const repetidos = emails.filter((email) => emails.filter((otro) => otro === email).length > 1);
-    validar(repetidos.length === 0, 'Hay destinatarios repetidos');
+    Validar(repetidos.length === 0, 'Hay destinatarios repetidos');
     this._destinatarios = direcciones;
   }
 
@@ -154,7 +154,7 @@ export class CorreoElectronico implements ICorreoBandeja {
   }
 
   private setFecha(valor: Date): void {
-    validar(!Number.isNaN(valor.getTime()), 'La fecha del correo no es válida');
+    Validar(!Number.isNaN(valor.getTime()), 'La fecha del correo no es válida');
     this._fecha = new Date(valor.getTime());
   }
 

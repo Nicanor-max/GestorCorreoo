@@ -25,11 +25,11 @@ export class GestorBandejas implements IGestorBandejas, IFuenteCorreos {
   constructor(bandejas: IBandeja[]) {
     bandejas.forEach((bandeja) => this.registrarBandeja(bandeja));
     const faltantes = TIPOS_OBLIGATORIOS.filter((tipo) => !this._bandejas.has(tipo));
-    validar(faltantes.length === 0, 'El gestor necesita las bandejas Entrada, Enviados, Borradores y Eliminados');
+    Validar(faltantes.length === 0, 'El gestor necesita las bandejas Entrada, Enviados, Borradores y Eliminados');
   }
 
   public agregar(correo: ICorreoBandeja, destino: TipoBandeja): void {
-    validar(this.ubicacionDe(correo.getId()) === null, `El correo ${correo.getId()} ya existe en el gestor`);
+    Validar(this.ubicacionDe(correo.getId()) === null, `El correo ${correo.getId()} ya existe en el gestor`);
     this.getBandeja(destino).recibir(correo, null);
   }
 
@@ -75,7 +75,7 @@ export class GestorBandejas implements IGestorBandejas, IFuenteCorreos {
 
   private obtenerUbicacion(idCorreo: string): TipoBandeja {
     const tipo = this.ubicacionDe(idCorreo);
-    validar(tipo !== null, `El correo ${idCorreo} no está en ninguna bandeja`);
+    Validar(tipo !== null, `El correo ${idCorreo} no está en ninguna bandeja`);
     return tipo as TipoBandeja;
   }
 
@@ -84,7 +84,7 @@ export class GestorBandejas implements IGestorBandejas, IFuenteCorreos {
   }
 
   private registrarBandeja(bandeja: IBandeja): void {
-    validar(!this._bandejas.has(bandeja.getTipo()), `La bandeja ${bandeja.getTipo()} está repetida`);
+    Validar(!this._bandejas.has(bandeja.getTipo()), `La bandeja ${bandeja.getTipo()} está repetida`);
     this._bandejas.set(bandeja.getTipo(), bandeja);
   }
 }
