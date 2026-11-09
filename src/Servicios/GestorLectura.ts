@@ -1,6 +1,6 @@
-import { TipoBandeja } from '../Bandejas/TipoBandeja';
+import { TipoBandeja } from '../TipoBandeja';
 import { ICorreoConsulta } from '../Interfaces/ICorreoConsulta';
-import { IGestorBandejas } from '../Interfaces/IGestorBandejas';
+import { IGestorBandejas } from '../Interfaces/IGestorBandeja';
 import { IGestorLectura } from '../Interfaces/IGestorLectura';
 
 export class GestorLectura implements IGestorLectura {

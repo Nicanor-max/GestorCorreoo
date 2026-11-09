@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GestorLectura } from '../Servicios/GestorLectura';
 import { GestorBandejas } from '../Bandejas/GestorBandejas';
-import { crearBandejas } from '../Bandejas/FabricaBandejas';
-import { TipoBandeja } from '../Bandejas/TipoBandeja';
-import { CorreoElectronico } from '../Correos/CorreoElectronico';
+import { crearBandejas } from '../Bandejas/FabricaBandeja';
+import { TipoBandeja } from '../TipoBandeja';
+import { CorreoElectronico } from '../Correo/CorreoElectronico';
 const completo = (id: string) =>
  new CorreoElectronico(id, { remitente: 'a@b.com', destinatarios: ['x@y.com'], asunto: 'Hola' });
 describe('GestorLectura', () => {

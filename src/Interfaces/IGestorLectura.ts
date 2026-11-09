@@ -1,4 +1,4 @@
-import { TipoBandeja } from '../Bandejas/TipoBandeja';
+import { TipoBandeja } from '../TipoBandeja';
 import { ICorreoConsulta } from './ICorreoConsulta';
 export interface IGestorLectura {
  marcarLeido(idCorreo: string): void;
