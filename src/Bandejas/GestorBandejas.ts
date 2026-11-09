@@ -2,6 +2,8 @@ import { TipoBandeja } from '../tipobandeja';
 import { IBandeja } from '../Interfaces/IBandeja';
 import { IBandejaConsulta } from '../Interfaces/IBandejaConsulta';
 import { ICorreoBandeja } from '../Interfaces/ICorreoBandeja';
+import { ICorreoConsulta } from '../Interfaces/ICorreoConsulta';
+import { IFuenteCorreos } from '../Interfaces/IFuenteCorreos';
 import { IGestorBandejas } from '../Interfaces/IGestorBandeja';
 import { validar } from '../validar';
 
@@ -12,7 +14,10 @@ const TIPOS_OBLIGATORIOS: TipoBandeja[] = [
   TipoBandeja.ELIMINADOS,
 ];
 
-export class GestorBandejas implements IGestorBandejas {
+// bandejas cuyos correos están "vivos" (todas menos Eliminados)
+const TIPOS_ACTIVOS: TipoBandeja[] = [TipoBandeja.ENTRADA, TipoBandeja.ENVIADOS, TipoBandeja.BORRADORES];
+
+export class GestorBandejas implements IGestorBandejas, IFuenteCorreos {
   // cada tipo de bandeja apunta a su bandeja
   private _bandejas: Map<TipoBandeja, IBandeja> = new Map();
 
@@ -52,6 +57,20 @@ export class GestorBandejas implements IGestorBandejas {
   public ubicacionDe(idCorreo: string): TipoBandeja | null {
     const encontradas = TIPOS_OBLIGATORIOS.filter((tipo) => this.getBandeja(tipo).contiene(idCorreo));
     return encontradas.length === 0 ? null : encontradas[0];
+  }
+
+  // Sprint 2: busca el correo en la bandeja donde esté
+  public obtenerCorreo(idCorreo: string): ICorreoBandeja {
+    return this.getBandeja(this.obtenerUbicacion(idCorreo)).obtener(idCorreo);
+  }
+
+  public listarDe(tipo: TipoBandeja): ICorreoConsulta[] {
+    return this.getBandeja(tipo).listar();
+  }
+
+  // junta los correos de Entrada, Enviados y Borradores en una sola lista
+  public listarActivos(): ICorreoConsulta[] {
+    return TIPOS_ACTIVOS.reduce<ICorreoConsulta[]>((todos, tipo) => [...todos, ...this.listarDe(tipo)], []);
   }
 
   private obtenerUbicacion(idCorreo: string): TipoBandeja {

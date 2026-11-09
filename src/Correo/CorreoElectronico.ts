@@ -15,6 +15,8 @@ export class CorreoElectronico implements ICorreoBandeja {
   private _cuerpo: string = '';
   private _fecha: Date = new Date();
   private _bandejaOrigen: TipoBandeja | null = null;
+  private _leido: boolean = false;
+  private _favorito: boolean = false;
 
   // doble encapsulamiento: ni siquiera la propia clase toca los atributos directo,
   // todo pasa por los set (que validan) y los get
@@ -60,6 +62,14 @@ export class CorreoElectronico implements ICorreoBandeja {
     return this._bandejaOrigen;
   }
 
+  public estaLeido(): boolean {
+    return this._leido;
+  }
+
+  public esFavorito(): boolean {
+    return this._favorito;
+  }
+
   // ---------- comportamiento ----------
 
   public estaCompleto(): boolean {
@@ -83,6 +93,24 @@ export class CorreoElectronico implements ICorreoBandeja {
     this.setBandejaOrigen(null);
   }
 
+  // RF-08: estados de lectura
+  public marcarLeido(): void {
+    this.setLeido(true);
+  }
+
+  public marcarNoLeido(): void {
+    this.setLeido(false);
+  }
+
+  // RF-09: favoritos
+  public marcarFavorito(): void {
+    this.setFavorito(true);
+  }
+
+  public quitarFavorito(): void {
+    this.setFavorito(false);
+  }
+
   public obtenerDatos(): DatosCorreo {
     return {
       id: this.getId(),
@@ -91,6 +119,8 @@ export class CorreoElectronico implements ICorreoBandeja {
       asunto: this.getAsunto(),
       cuerpo: this.getCuerpo(),
       fecha: this.getFecha(),
+      leido: this.estaLeido(),
+      favorito: this.esFavorito(),
       eliminado: this.estaEliminado(),
       bandejaOrigen: this.getBandejaOrigen(),
     };
@@ -131,9 +161,12 @@ export class CorreoElectronico implements ICorreoBandeja {
   private setBandejaOrigen(valor: TipoBandeja | null): void {
     this._bandejaOrigen = valor;
   }
+
+  private setLeido(valor: boolean): void {
+    this._leido = valor;
+  }
+
+  private setFavorito(valor: boolean): void {
+    this._favorito = valor;
+  }
 }
-
-
-
-
-

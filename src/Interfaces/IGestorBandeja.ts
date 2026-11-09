@@ -9,4 +9,5 @@ export interface IGestorBandejas {
   restaurar(idCorreo: string): void;
   consultar(tipo: TipoBandeja): IBandejaConsulta;
   ubicacionDe(idCorreo: string): TipoBandeja | null;
+  obtenerCorreo(idCorreo: string): ICorreoBandeja;
 }
