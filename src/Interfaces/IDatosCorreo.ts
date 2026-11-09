@@ -7,6 +7,8 @@ export interface DatosCorreo {
   asunto: string;
   cuerpo: string;
   fecha: Date;
+  leido: boolean;
+  favorito: boolean;
   eliminado: boolean;
   bandejaOrigen: TipoBandeja | null;
 }

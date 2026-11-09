@@ -1,4 +1,4 @@
-import { DatosCorreo } from './IDatosCorreo'    ;
+import { DatosCorreo } from './IDatosCorreo';
 
 export interface ICorreoConsulta {
   getId(): string;
@@ -8,5 +8,7 @@ export interface ICorreoConsulta {
   getCuerpo(): string;
   getFecha(): Date;
   estaCompleto(): boolean;
+  estaLeido(): boolean;
+  esFavorito(): boolean;
   obtenerDatos(): DatosCorreo;
 }
