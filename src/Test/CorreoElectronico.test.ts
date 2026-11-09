@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { CorreoElectronico } from '../Correo/CorreoElectronico';
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 
 const fecha = new Date('2026-11-02T10:00:00');
 

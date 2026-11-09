@@ -1,9 +1,9 @@
 import { DireccionEmail } from '../Comun/DirreccionEmail';
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 import { DatosCorreo } from '../Interfaces/IDatosCorreo';
 import { DatosNuevoCorreo } from '../Interfaces/IDatosNuevoCorreo';
 import { ICorreoBandeja } from '../Interfaces/ICorreoBandeja';
-import { validar } from '../validar';
+import { Validar } from '../Validar';
 
 export class CorreoElectronico implements ICorreoBandeja {
 

@@ -1,5 +1,5 @@
 import { BandejaBase } from './BandejaBase';
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 
 // herencia
 export class BandejaEnviados extends BandejaBase {

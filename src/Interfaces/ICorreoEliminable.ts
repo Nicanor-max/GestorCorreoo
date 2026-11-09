@@ -1,4 +1,4 @@
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 
 export interface ICorreoEliminable {
   estaEliminado(): boolean;

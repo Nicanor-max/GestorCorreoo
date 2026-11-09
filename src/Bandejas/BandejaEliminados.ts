@@ -1,5 +1,5 @@
 import { BandejaBase } from './BandejaBase';
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 import { ICorreoBandeja } from '../Interfaces/ICorreoBandeja';
 import { ICorreoConsulta } from '../Interfaces/ICorreoConsulta';
 

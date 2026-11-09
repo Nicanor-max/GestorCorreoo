@@ -1,4 +1,4 @@
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 import { ICorreoConsulta } from './ICorreoConsulta';
 
 // Solo lectura: lo que necesitan la búsqueda y la vista de favoritos

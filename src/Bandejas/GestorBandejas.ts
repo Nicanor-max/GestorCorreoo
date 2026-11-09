@@ -1,11 +1,11 @@
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 import { IBandeja } from '../Interfaces/IBandeja';
 import { IBandejaConsulta } from '../Interfaces/IBandejaConsulta';
 import { ICorreoBandeja } from '../Interfaces/ICorreoBandeja';
 import { ICorreoConsulta } from '../Interfaces/ICorreoConsulta';
 import { IFuenteCorreos } from '../Interfaces/IFuenteCorreos';
 import { IGestorBandejas } from '../Interfaces/IGestorBandeja';
-import { validar } from '../validar';
+import { Validar } from '../Validar';
 
 const TIPOS_OBLIGATORIOS: TipoBandeja[] = [
   TipoBandeja.ENTRADA,

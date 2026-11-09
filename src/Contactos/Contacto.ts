@@ -2,7 +2,7 @@ import { DireccionEmail } from '../Comun/DirreccionEmail';
 import { DatosContacto } from '../Interfaces/IDatosContacto';
 import { IContactoConsulta } from '../Interfaces/IContactoConsulta';
 import { IContactoModificacion } from '../Interfaces/IContactoModificacion';
-import { validar } from '../validar';
+import { Validar } from '../Validar';
 
 export class Contacto implements IContactoConsulta, IContactoModificacion {
 
@@ -37,7 +37,7 @@ export class Contacto implements IContactoConsulta, IContactoModificacion {
   }
 
   private setNombre(valor: string): void {
-    validar(valor.trim() !== '', 'El nombre del contacto no puede estar vacío');
+    Validar(valor.trim() !== '', 'El nombre del contacto no puede estar vacío');
     this._nombre = valor.trim();
   }
 

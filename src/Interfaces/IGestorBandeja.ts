@@ -1,4 +1,4 @@
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 import { IBandejaConsulta } from './IBandejaConsulta';
 import { ICorreoBandeja } from './ICorreoBandeja';
 

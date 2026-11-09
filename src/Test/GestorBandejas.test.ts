@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { GestorBandejas } from '../Bandejas/GestorBandejas';
 import { crearBandejas } from '../Bandejas/FabricaBandeja';
 import { BandejaEntrada } from '../Bandejas/BandejaEntrada';
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 import { CorreoElectronico } from '../Correo/CorreoElectronico';
 
 const completo = (id: string) =>

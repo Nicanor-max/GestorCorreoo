@@ -3,7 +3,7 @@ import { BandejaBase } from '../Bandejas/BandejaBase';
 import { BandejaEntrada } from '../Bandejas/BandejaEntrada';
 import { BandejaBorradores } from '../Bandejas/BandejaBorrador';
 import { BandejaEliminados } from '../Bandejas/BandejaEliminados';
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 import { CorreoElectronico } from '../Correo/CorreoElectronico';
 
 const completo = (id: string, fecha = new Date()) =>

@@ -1,4 +1,4 @@
-import { validar } from '../validar';
+import { validar } from '../Validar';
 
 // Objeto de valor: una dirección de email siempre válida y normalizada
 export class DireccionEmail {

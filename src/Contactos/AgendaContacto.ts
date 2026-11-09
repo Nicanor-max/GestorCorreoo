@@ -3,7 +3,7 @@ import { DireccionEmail } from '../Comun/DirreccionEmail';
 import { IAgendaConsulta } from '../Interfaces/IAgendaConsulta';
 import { IAgendaModificacion } from '../Interfaces/IAgendaModificacion';
 import { IContactoConsulta } from '../Interfaces/IContactoConsulta';
-import { validar } from '../validar';
+import { validar } from '../Validar';
 
 export class AgendaContactos implements IAgendaConsulta, IAgendaModificacion {
   private _contactos: Contacto[] = [];

@@ -1,5 +1,5 @@
 import { BandejaBase } from './BandejaBase';
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 import { ICorreoConsulta } from '../Interfaces/ICorreoConsulta';
 
 // herencia + polimorfismo: un borrador puede estar incompleto

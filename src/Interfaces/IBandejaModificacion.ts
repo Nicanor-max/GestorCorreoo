@@ -1,4 +1,4 @@
-import { TipoBandeja } from '../tipobandeja';
+import { TipoBandeja } from '../TipoBandeja';
 import { ICorreoBandeja } from './ICorreoBandeja';
 
 export interface IBandejaModificacion {
