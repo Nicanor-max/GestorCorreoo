@@ -125,6 +125,18 @@ export class CorreoElectronico implements ICorreoBandeja {
       bandejaOrigen: this.getBandejaOrigen(),
     };
   }
+    // RF-07: edición de borradores (pasa por los mismos set que validan)
+  public cambiarDestinatarios(destinatarios: string[]): void {
+    this.setDestinatarios(destinatarios);
+  }
+
+  public cambiarAsunto(asunto: string): void {
+    this.setAsunto(asunto);
+  }
+
+  public cambiarCuerpo(cuerpo: string): void {
+    this.setCuerpo(cuerpo);
+  }
 
   // ---------- set privados (validan antes de guardar) ----------
 
