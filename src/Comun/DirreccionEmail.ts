@@ -1,4 +1,4 @@
-import { validar } from '../Validar';
+import { Validar } from '../Validar';
 
 // Objeto de valor: una dirección de email siempre válida y normalizada
 export class DireccionEmail {
@@ -25,7 +25,7 @@ export class DireccionEmail {
 
   private setValor(valor: string): void {
     const normalizado = DireccionEmail.normalizar(valor);
-    validar(DireccionEmail.FORMATO.test(normalizado), `La dirección "${valor}" no tiene un formato válido`);
+    Validar(DireccionEmail.FORMATO.test(normalizado), `La dirección "${valor}" no tiene un formato válido`);
     this._valor = normalizado;
   }
 }

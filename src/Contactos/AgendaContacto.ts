@@ -3,14 +3,14 @@ import { DireccionEmail } from '../Comun/DirreccionEmail';
 import { IAgendaConsulta } from '../Interfaces/IAgendaConsulta';
 import { IAgendaModificacion } from '../Interfaces/IAgendaModificacion';
 import { IContactoConsulta } from '../Interfaces/IContactoConsulta';
-import { validar } from '../Validar';
+import { Validar } from '../Validar';
 
 export class AgendaContactos implements IAgendaConsulta, IAgendaModificacion {
   private _contactos: Contacto[] = [];
 
   public registrar(nombre: string, email: string): IContactoConsulta {
     const contacto = new Contacto(nombre, email);
-    validar(!this.existe(contacto.getEmail()), `Ya existe un contacto con el email ${contacto.getEmail()}`);
+    Validar(!this.existe(contacto.getEmail()), `Ya existe un contacto con el email ${contacto.getEmail()}`);
     this._contactos.push(contacto);
     return contacto;
   }
@@ -37,7 +37,7 @@ export class AgendaContactos implements IAgendaConsulta, IAgendaModificacion {
     const contacto = this.obtener(emailActual);
     const nuevo = new DireccionEmail(emailNuevo).getValor();
     const quedaUnico = nuevo === contacto.getEmail() || !this.existe(nuevo);
-    validar(quedaUnico, `Ya existe un contacto con el email ${nuevo}`);
+    Validar(quedaUnico, `Ya existe un contacto con el email ${nuevo}`);
     contacto.cambiarEmail(nuevo);
   }
 
@@ -54,7 +54,7 @@ export class AgendaContactos implements IAgendaConsulta, IAgendaModificacion {
 
   private obtener(email: string): Contacto {
     const contacto = this.buscar(email);
-    validar(contacto !== undefined, `No existe un contacto con el email ${email}`);
+    Validar(contacto !== undefined, `No existe un contacto con el email ${email}`);
     return contacto as Contacto;
   }
 
