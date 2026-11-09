@@ -13,13 +13,15 @@ describe('CorreoElectronico', () => {
       cuerpo: 'Hola',
       fecha,
     });
-    expect(correo.obtenerDatos()).toEqual({
+        expect(correo.obtenerDatos()).toEqual({
       id: 'C1',
       remitente: 'nicanor@ucp.edu.ar',
       destinatarios: ['esteban@ucp.edu.ar'],
       asunto: 'Sprint 1',
       cuerpo: 'Hola',
       fecha,
+      leido: false,
+      favorito: false,
       eliminado: false,
       bandejaOrigen: null,
     });
@@ -55,5 +57,21 @@ describe('CorreoElectronico', () => {
     expect(() => correo.restaurar(TipoBandeja.ENVIADOS)).toThrow();
     correo.restaurar(TipoBandeja.ENTRADA);
     expect(correo.estaEliminado()).toBe(false);
+  });
+    it('se marca como leído y no leído (RF08)', () => {
+    const correo = new CorreoElectronico('C1', { remitente: 'a@b.com' });
+    expect(correo.estaLeido()).toBe(false);
+    correo.marcarLeido();
+    expect(correo.estaLeido()).toBe(true);
+    correo.marcarNoLeido();
+    expect(correo.estaLeido()).toBe(false);
+  });
+
+  it('se marca y desmarca como favorito (RF09)', () => {
+    const correo = new CorreoElectronico('C1', { remitente: 'a@b.com' });
+    correo.marcarFavorito();
+    expect(correo.esFavorito()).toBe(true);
+    correo.quitarFavorito();
+    expect(correo.esFavorito()).toBe(false);
   });
 });
