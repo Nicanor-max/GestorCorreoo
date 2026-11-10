@@ -5,10 +5,11 @@ import { BandejaBorradores } from '../Bandejas/BandejaBorrador';
 import { BandejaEliminados } from '../Bandejas/BandejaEliminados';
 import { TipoBandeja } from '../TipoBandeja';
 import { CorreoElectronico } from '../Correo/CorreoElectronico';
+import { contacto } from './Ayudante';
 
 const completo = (id: string, fecha = new Date()) =>
-  new CorreoElectronico(id, { remitente: 'a@b.com', destinatarios: ['x@y.com'], asunto: 'Hola', fecha });
-const incompleto = (id: string) => new CorreoElectronico(id, { remitente: 'a@b.com' });
+  new CorreoElectronico(id, { remitente: contacto('a@b.com'), destinatarios: [contacto('x@y.com')], asunto: 'Hola', fecha });
+const incompleto = (id: string) => new CorreoElectronico(id, { remitente: contacto('a@b.com') });
 
 describe('Bandejas', () => {
   it('Entrada recibe correos completos nuevos (RF06)', () => {
