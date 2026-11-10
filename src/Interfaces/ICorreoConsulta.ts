@@ -1,9 +1,12 @@
 import { DatosCorreo } from './IDatosCorreo';
+import { IContactoConsulta } from './IContactoConsulta';
 
 export interface ICorreoConsulta {
   getId(): string;
-  getRemitente(): string;
-  getDestinatarios(): string[];
+  getRemitente(): IContactoConsulta;
+  getDestinatarios(): IContactoConsulta[];
+  getEmailRemitente(): string;
+  getEmailsDestinatarios(): string[];
   getAsunto(): string;
   getCuerpo(): string;
   getFecha(): Date;

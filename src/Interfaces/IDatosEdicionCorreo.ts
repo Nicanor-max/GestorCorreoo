@@ -1,5 +1,7 @@
+import { IContactoConsulta } from './IContactoConsulta';
+
 export interface DatosEdicionCorreo {
-  destinatarios?: string[];
+  destinatarios?: IContactoConsulta[];
   asunto?: string;
   cuerpo?: string;
 }

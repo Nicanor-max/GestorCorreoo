@@ -1,9 +1,10 @@
 import { TipoBandeja } from '../TipoBandeja';
+import { DatosContacto } from './IDatosContacto';
 
 export interface DatosCorreo {
   id: string;
-  remitente: string;
-  destinatarios: string[];
+  remitente: DatosContacto;
+  destinatarios: DatosContacto[];
   asunto: string;
   cuerpo: string;
   fecha: Date;
