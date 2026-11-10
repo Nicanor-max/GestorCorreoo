@@ -4,9 +4,10 @@ import { GestorBandejas } from '../Bandejas/GestorBandejas';
 import { crearBandejas } from '../Bandejas/FabricaBandeja';
 import { TipoBandeja } from '../TipoBandeja';
 import { CorreoElectronico } from '../Correo/CorreoElectronico';
+import { contacto } from './Ayudante';
 
 const completo = (id: string) =>
-  new CorreoElectronico(id, { remitente: 'nicanor@ucp.edu.ar', destinatarios: ['esteban@ucp.edu.ar'], asunto: 'Sprint 2' });
+  new CorreoElectronico(id, { remitente: contacto('nicanor@ucp.edu.ar'), destinatarios: [contacto('esteban@ucp.edu.ar')], asunto: 'Sprint 2' });
 
 describe('ServicioEnvio', () => {
   let gestor: GestorBandejas;
@@ -31,8 +32,8 @@ describe('ServicioEnvio', () => {
   });
 
   it('no envía un borrador sin destinatarios ni sin asunto', () => {
-    gestor.agregar(new CorreoElectronico('B1', { remitente: 'a@b.com', asunto: 'Hola' }), TipoBandeja.BORRADORES);
-    gestor.agregar(new CorreoElectronico('B2', { remitente: 'a@b.com', destinatarios: ['x@y.com'] }), TipoBandeja.BORRADORES);
+    gestor.agregar(new CorreoElectronico('B1', { remitente: contacto('a@b.com'), asunto: 'Hola' }), TipoBandeja.BORRADORES);
+    gestor.agregar(new CorreoElectronico('B2', { remitente: contacto('a@b.com'), destinatarios: [contacto('x@y.com')] }), TipoBandeja.BORRADORES);
     expect(() => envio.enviar('B1')).toThrow('no tiene destinatarios');
     expect(() => envio.enviar('B2')).toThrow('no tiene asunto');
     expect(gestor.ubicacionDe('B1')).toBe(TipoBandeja.BORRADORES);
@@ -47,6 +48,6 @@ describe('ServicioEnvio', () => {
   it('envía un correo nuevo directamente a Enviados', () => {
     envio.enviarNuevo(completo('N1'));
     expect(gestor.ubicacionDe('N1')).toBe(TipoBandeja.ENVIADOS);
-    expect(() => envio.enviarNuevo(new CorreoElectronico('N2', { remitente: 'a@b.com' }))).toThrow();
+    expect(() => envio.enviarNuevo(new CorreoElectronico('N2', { remitente: contacto('a@b.com') }))).toThrow();
   });
 });

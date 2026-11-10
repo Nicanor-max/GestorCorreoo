@@ -4,9 +4,10 @@ import { GestorBandejas } from '../Bandejas/GestorBandejas';
 import { crearBandejas } from '../Bandejas/FabricaBandeja';
 import { TipoBandeja } from '../TipoBandeja';
 import { CorreoElectronico } from '../Correo/CorreoElectronico';
+import { contacto } from './Ayudante';
 
 const completo = (id: string) =>
-  new CorreoElectronico(id, { remitente: 'a@b.com', destinatarios: ['x@y.com'], asunto: 'Hola' });
+  new CorreoElectronico(id, { remitente: contacto('a@b.com'), destinatarios: [contacto('x@y.com')], asunto: 'Hola' });
 
 describe('GestorFavoritos', () => {
   let gestor: GestorBandejas;

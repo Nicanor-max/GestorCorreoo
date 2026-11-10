@@ -9,6 +9,7 @@ import { GestorLectura } from '../Servicios/GestorLectura';
 import { GestorFavoritos } from '../Servicios/GestorFavoritos';
 import { BuscadorCorreos } from '../Busqueda/BuscadorCorreos';
 import { crearCriteriosBusqueda } from '../Busqueda/FabricaCriterios';
+import { contacto } from './Ayudante';
 
 // el escenario que se muestra en la daily del Sprint 2
 describe('Escenario completo Sprint 2', () => {
@@ -21,21 +22,21 @@ describe('Escenario completo Sprint 2', () => {
     const buscador = new BuscadorCorreos(gestor, crearCriteriosBusqueda());
 
     // 1. crear un borrador incompleto
-    borradores.guardar(new CorreoElectronico('B1', { remitente: 'nicanor@ucp.edu.ar' }));
+    borradores.guardar(new CorreoElectronico('B1', { remitente: contacto('nicanor@ucp.edu.ar') }));
     expect(() => envio.enviar('B1')).toThrow();
 
     // 2. editarlo y enviarlo
-    borradores.editar('B1', { destinatarios: ['esteban@ucp.edu.ar'], asunto: 'Daily Sprint 2' });
+    borradores.editar('B1', { destinatarios: [contacto('esteban@ucp.edu.ar')], asunto: 'Daily Sprint 2' });
     envio.enviar('B1');
 
     // 3. verificar que aparece en Enviados
     expect(gestor.ubicacionDe('B1')).toBe(TipoBandeja.ENVIADOS);
 
     // 4. buscarlo por texto
-    expect(buscador.buscar('daily').map((c) => c.getId())).toEqual(['B1']);
+    expect(buscador.buscarEnActivas('daily').map((c) => c.getId())).toEqual(['B1']);
 
     // 5. marcar un mensaje recibido como leído
-    gestor.agregar(new CorreoElectronico('R1', { remitente: 'esteban@ucp.edu.ar', destinatarios: ['nicanor@ucp.edu.ar'], asunto: 'Re: Daily' }), TipoBandeja.ENTRADA);
+    gestor.agregar(new CorreoElectronico('R1', { remitente: contacto('esteban@ucp.edu.ar'), destinatarios: [contacto('nicanor@ucp.edu.ar')], asunto: 'Re: Daily' }), TipoBandeja.ENTRADA);
     expect(lectura.contarNoLeidos(TipoBandeja.ENTRADA)).toBe(1);
     lectura.marcarLeido('R1');
     expect(lectura.contarNoLeidos(TipoBandeja.ENTRADA)).toBe(0);

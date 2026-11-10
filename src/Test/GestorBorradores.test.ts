@@ -4,6 +4,7 @@ import { GestorBandejas } from '../Bandejas/GestorBandejas';
 import { crearBandejas } from '../Bandejas/FabricaBandeja';
 import { TipoBandeja } from '../TipoBandeja';
 import { CorreoElectronico } from '../Correo/CorreoElectronico';
+import { contacto } from './Ayudante';
 
 describe('GestorBorradores', () => {
   let gestor: GestorBandejas;
@@ -12,7 +13,7 @@ describe('GestorBorradores', () => {
   beforeEach(() => {
     gestor = new GestorBandejas(crearBandejas());
     borradores = new GestorBorradores(gestor);
-    borradores.guardar(new CorreoElectronico('B1', { remitente: 'nicanor@ucp.edu.ar' }));
+    borradores.guardar(new CorreoElectronico('B1', { remitente: contacto('nicanor@ucp.edu.ar') }));
   });
 
   it('guarda un borrador incompleto (RF07)', () => {
@@ -21,21 +22,21 @@ describe('GestorBorradores', () => {
   });
 
   it('edita solo los campos indicados', () => {
-    borradores.editar('B1', { asunto: 'Avance', destinatarios: ['esteban@ucp.edu.ar'] });
+    borradores.editar('B1', { asunto: 'Avance', destinatarios: [contacto('esteban@ucp.edu.ar')] });
     borradores.editar('B1', { cuerpo: 'Te paso el avance' });
     const borrador = borradores.recuperar('B1');
     expect(borrador.getAsunto()).toBe('Avance');
-    expect(borrador.getDestinatarios()).toEqual(['esteban@ucp.edu.ar']);
+    expect(borrador.getEmailsDestinatarios()).toEqual(['esteban@ucp.edu.ar']);
     expect(borrador.getCuerpo()).toBe('Te paso el avance');
     expect(borrador.estaCompleto()).toBe(true);
   });
 
   it('valida los datos al editar', () => {
-    expect(() => borradores.editar('B1', { destinatarios: ['malo'] })).toThrow();
+    expect(() => borradores.editar('B1', { destinatarios: [contacto('malo')] })).toThrow();
   });
 
   it('no edita correos que no son borradores', () => {
-    gestor.agregar(new CorreoElectronico('C1', { remitente: 'a@b.com', destinatarios: ['x@y.com'], asunto: 'Hola' }), TipoBandeja.ENTRADA);
+    gestor.agregar(new CorreoElectronico('C1', { remitente: contacto('a@b.com'), destinatarios: [contacto('x@y.com')], asunto: 'Hola' }), TipoBandeja.ENTRADA);
     expect(() => borradores.editar('C1', { asunto: 'Otro' })).toThrow('no es un borrador');
     expect(() => borradores.recuperar('NO-EXISTE')).toThrow();
   });
