@@ -5,5 +5,6 @@ import { ICriterioBusqueda } from './ICriterioBusqueda';
 export interface IBuscadorCorreos {
   buscar(texto: string): ICorreoConsulta[];
   buscarEn(tipo: TipoBandeja, texto: string): ICorreoConsulta[];
+  buscarEnActivas(texto: string): ICorreoConsulta[];
   buscarCon(criterio: ICriterioBusqueda, texto: string): ICorreoConsulta[];
 }

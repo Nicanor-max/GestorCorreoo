@@ -1,16 +1,18 @@
-import { DireccionEmail } from '../Comun/DirreccionEmail';
+import { Contacto } from '../Contactos/Contacto';
 import { TipoBandeja } from '../TipoBandeja';
 import { DatosCorreo } from '../Interfaces/IDatosCorreo';
 import { DatosNuevoCorreo } from '../Interfaces/IDatosNuevoCorreo';
+import { IContactoConsulta } from '../Interfaces/IContactoConsulta';
 import { ICorreoBandeja } from '../Interfaces/ICorreoBandeja';
 import { Validar } from '../Validar';
 
 export class CorreoElectronico implements ICorreoBandeja {
 
   // encapsulamiento: los atributos son privados
+  // RF-01: remitente y destinatarios son objetos Contacto
   private _id: string = '';
-  private _remitente: DireccionEmail = new DireccionEmail('sin-remitente@correo.com');
-  private _destinatarios: DireccionEmail[] = [];
+  private _remitente: Contacto = new Contacto('Sin remitente', 'sin-remitente@correo.com');
+  private _destinatarios: Contacto[] = [];
   private _asunto: string = '';
   private _cuerpo: string = '';
   private _fecha: Date = new Date();
@@ -36,13 +38,22 @@ export class CorreoElectronico implements ICorreoBandeja {
     return this._id;
   }
 
-  public getRemitente(): string {
-    return this._remitente.getValor();
+  // devuelve una copia del contacto: desde afuera no se puede cambiar el remitente
+  public getRemitente(): IContactoConsulta {
+    return this.copiar(this._remitente);
   }
 
-  // devuelve una copia, no la lista interna
-  public getDestinatarios(): string[] {
-    return this._destinatarios.map((d) => d.getValor());
+  // devuelve copias: la colección de destinatarios no se puede modificar desde afuera
+  public getDestinatarios(): IContactoConsulta[] {
+    return this._destinatarios.map((d) => this.copiar(d));
+  }
+
+  public getEmailRemitente(): string {
+    return this.getRemitente().getEmail();
+  }
+
+  public getEmailsDestinatarios(): string[] {
+    return this.getDestinatarios().map((d) => d.getEmail());
   }
 
   public getAsunto(): string {
@@ -111,22 +122,8 @@ export class CorreoElectronico implements ICorreoBandeja {
     this.setFavorito(false);
   }
 
-  public obtenerDatos(): DatosCorreo {
-    return {
-      id: this.getId(),
-      remitente: this.getRemitente(),
-      destinatarios: this.getDestinatarios(),
-      asunto: this.getAsunto(),
-      cuerpo: this.getCuerpo(),
-      fecha: this.getFecha(),
-      leido: this.estaLeido(),
-      favorito: this.esFavorito(),
-      eliminado: this.estaEliminado(),
-      bandejaOrigen: this.getBandejaOrigen(),
-    };
-  }
-    // RF-07: edición de borradores (pasa por los mismos set que validan)
-  public cambiarDestinatarios(destinatarios: string[]): void {
+  // RF-07: edición de borradores (pasa por los mismos set que validan)
+  public cambiarDestinatarios(destinatarios: IContactoConsulta[]): void {
     this.setDestinatarios(destinatarios);
   }
 
@@ -138,6 +135,21 @@ export class CorreoElectronico implements ICorreoBandeja {
     this.setCuerpo(cuerpo);
   }
 
+  public obtenerDatos(): DatosCorreo {
+    return {
+      id: this.getId(),
+      remitente: this.getRemitente().obtenerDatos(),
+      destinatarios: this.getDestinatarios().map((d) => d.obtenerDatos()),
+      asunto: this.getAsunto(),
+      cuerpo: this.getCuerpo(),
+      fecha: this.getFecha(),
+      leido: this.estaLeido(),
+      favorito: this.esFavorito(),
+      eliminado: this.estaEliminado(),
+      bandejaOrigen: this.getBandejaOrigen(),
+    };
+  }
+
   // ---------- set privados (validan antes de guardar) ----------
 
   private setId(valor: string): void {
@@ -145,16 +157,17 @@ export class CorreoElectronico implements ICorreoBandeja {
     this._id = valor.trim();
   }
 
-  private setRemitente(valor: string): void {
-    this._remitente = new DireccionEmail(valor);
+  // guarda una copia: si después el contacto cambia o se borra de la agenda,
+  // el correo histórico conserva los datos con los que se creó
+  private setRemitente(valor: IContactoConsulta): void {
+    this._remitente = this.copiar(valor);
   }
 
-  private setDestinatarios(valores: string[]): void {
-    const direcciones = valores.map((v) => new DireccionEmail(v));
-    const emails = direcciones.map((d) => d.getValor());
+  private setDestinatarios(valores: IContactoConsulta[]): void {
+    const emails = valores.map((d) => d.getEmail());
     const repetidos = emails.filter((email) => emails.filter((otro) => otro === email).length > 1);
     Validar(repetidos.length === 0, 'Hay destinatarios repetidos');
-    this._destinatarios = direcciones;
+    this._destinatarios = valores.map((d) => this.copiar(d));
   }
 
   private setAsunto(valor: string): void {
@@ -180,5 +193,9 @@ export class CorreoElectronico implements ICorreoBandeja {
 
   private setFavorito(valor: boolean): void {
     this._favorito = valor;
+  }
+
+  private copiar(contacto: IContactoConsulta): Contacto {
+    return new Contacto(contacto.getNombre(), contacto.getEmail());
   }
 }
