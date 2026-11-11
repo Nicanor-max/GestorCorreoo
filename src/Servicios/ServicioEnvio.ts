@@ -5,7 +5,7 @@ import { IGestorBandejas } from '../Interfaces/IGestorBandeja';
 import { IServicioEnvio } from '../Interfaces/IServicioEnvio';
 import { Validar } from '../Validar';
 
-// RF-02: envío simulado de correos
+// RF2 envío simulado de correos
 export class ServicioEnvio implements IServicioEnvio {
   private _gestor: IGestorBandejas;
 

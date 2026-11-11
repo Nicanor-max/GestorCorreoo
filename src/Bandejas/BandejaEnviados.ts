@@ -3,7 +3,7 @@ import { TipoBandeja } from '../TipoBandeja';
 import { ICorreoBandeja } from '../Interfaces/ICorreoBandeja';
 
 // herencia + polimorfismo: además de las reglas de la base,
-// recibe los borradores que se envían (RF-02)
+// recibe los borradores que se envían
 export class BandejaEnviados extends BandejaBase {
   public override getTipo(): TipoBandeja {
     return TipoBandeja.ENVIADOS;
