@@ -12,7 +12,7 @@ const completo = (id: string, fecha = new Date()) =>
 const incompleto = (id: string) => new CorreoElectronico(id, { remitente: contacto('a@b.com') });
 
 describe('Bandejas', () => {
-  it('Entrada recibe correos completos nuevos (RF06)', () => {
+  it('Entrada recibe correos completos nuevos', () => {
     const entrada = new BandejaEntrada();
     entrada.recibir(completo('C1'), null);
     expect(entrada.contiene('C1')).toBe(true);
