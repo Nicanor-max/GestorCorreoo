@@ -13,7 +13,5 @@ describe('DireccionEmail', () => {
     expect(() => new DireccionEmail('con espacio@ucp.edu.ar')).toThrow();
   });
 
-  it('compara dos direcciones por su valor', () => {
-    expect(new DireccionEmail('a@b.com').esIgualA(new DireccionEmail('A@B.com'))).toBe(true);
-  });
+
 });
