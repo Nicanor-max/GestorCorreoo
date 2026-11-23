@@ -27,7 +27,7 @@ export class GestorBandejas implements IGestorBandejas, IFuenteCorreos {
     const faltantes = TIPOS_OBLIGATORIOS.filter((tipo) => !this._bandejas.has(tipo));
     Validar(faltantes.length === 0, 'El gestor necesita las bandejas Entrada, Enviados, Borradores y Eliminados');
   }
-
+   //solid L mejor ejemplo
   public agregar(correo: ICorreoBandeja, destino: TipoBandeja): void {
     Validar(this.ubicacionDe(correo.getId()) === null, `El correo ${correo.getId()} ya existe en el gestor`);
     this.getBandeja(destino).recibir(correo, null);
