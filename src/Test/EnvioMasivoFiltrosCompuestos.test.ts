@@ -20,7 +20,7 @@ describe('Envío masivo a 100 usuarios + filtro compuesto', () => {
   let idManejo: string;
 
   const ids = (correos: ICorreoConsulta[]): string[] => correos.map((c) => c.getId()).sort();
-  const persona = (numero: number): IUsuario => servidor.obtenerUsuario(persona${numero}@ucp.edu.ar);
+  const persona = (numero: number): IUsuario => servidor.obtenerUsuario(`persona${numero}@ucp.edu.ar`);
   const contactosDeTodos = () => personas.map((p) => p.getContacto());
   // cuántas de las 100 personas tienen el correo en la bandeja indicada
   const cuantosTienen = (id: string, tipo: TipoBandeja): number =>
@@ -44,7 +44,7 @@ describe('Envío masivo a 100 usuarios + filtro compuesto', () => {
 
     personas = [];
     for (let i = 1; i <= 100; i++) {
-      personas.push(crearUsuario(Persona ${i}, persona${i}@ucp.edu.ar));
+      personas.push(crearUsuario(`Persona ${i}`, `persona${i}@ucp.edu.ar`));
     }
     personas.forEach((p) => servidor.registrar(p));
 
